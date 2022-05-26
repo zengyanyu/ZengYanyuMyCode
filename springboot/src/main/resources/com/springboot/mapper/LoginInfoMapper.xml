@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springboot.mapper.LoginInfoMapper">
+	<resultMap id="BaseResultMap" type="com.springboot.domain.LoginInfo">
+		<id column="id" property="id" />
+		<result column="password" property="password" />
+		<result column="username" property="username" />
+	</resultMap>
+	<delete id="deleteByPrimaryKey">
+		delete from
+		`logininfo`
+		where id =
+		#{id}
+	</delete>
+	<insert id="insert" keyProperty="id" useGeneratedKeys="true">
+		insert
+		into `logininfo` (password, username)
+		values
+		(#{password}, #{username})
+	</insert>
+	<update id="updateByPrimaryKey">
+		update `logininfo`
+		set password =
+		#{password},
+		username
+		= #{username}
+		where id = #{id}
+	</update>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap">
+		select id, password,
+		username
+		from `logininfo`
+		where id = #{id}
+	</select>
+	<select id="selectAll" resultMap="BaseResultMap">
+		select id, password, username
+		from `logininfo`
+	</select>
+
+	<select id="countByUsername" resultType="Integer">
+		select count(id)
+		from
+		`logininfo` where username = #{username}
+	</select>
+</mapper>

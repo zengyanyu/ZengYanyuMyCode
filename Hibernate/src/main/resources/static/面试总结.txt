@@ -1,0 +1,115 @@
+String,StringBuilder和StringBuffer的区别是什么?
+	String:String的值是不可变的，这就导致每次对String的操作都会生成新的String对象，
+	不仅效率低下，而且浪费大量优先的内存空间(不可变)
+	StringBuffer: StringBuffer是可变类，和线程安全的字符串操作类，任何对它指向的
+	字符串的操作都不会产生新的对象。每个StringBuffer对象都有一定的缓冲区容量，
+	当字符串大小没有超过容量时，不会分配新的容量，当字符串大小超过容量时，会自动增加容量 
+	(可变,线程安全,多线程操作字符串)
+	StringBuilder:可变类,速度更快.(可变,线程不安全,单线程操作字符串)
+	
+Spring事务类型详解:
+	PROPAGATION:表示传播
+	PROPAGATION_REQUIRED(必须的)–支持当前事务，如果当前没有事务，就新建一个事务。这是最常见的选择。
+	PROPAGATION_SUPPORTS(支持)–支持当前事务，如果当前没有事务，就以非事务方式执行。
+	PROPAGATION_MANDATORY(强制性的)–支持当前事务，如果当前没有事务，就抛出异常。
+	PROPAGATION_REQUIRES_NEW(要求为新的)–新建事务，如果当前存在事务，把当前事务挂起。
+	PROPAGATION_NOT_SUPPORTED(不支持)–以非事务方式执行操作，如果当前存在事务，就把当前事务挂起。
+	PROPAGATION_NEVER(从未)–以非事务方式执行，如果当前存在事务，则抛出异常。
+	PROPAGATION_NESTED(嵌套)–如果当前存在事务，则在嵌套事务内执行。如果当前没有事务，
+	则进行与 PROPAGATION_REQUIRED 类似的操作。
+	编程式事务:即采用注解的方式:
+	当事务传播特性为 PROPAGATION_REQUIRED（大部分项目默认配置）时，业务组合调用时，
+	在其组合方法也添加PROPAGATION_REQUIRED传播特性
+	子业务方法会使用上级方法的事务，若某发生异常，会Rollback
+	
+List的初始值,HashMap的初始值,HashMap使用的方式;
+	 1.List arrayList = new ArrayList();
+	如果像上面这样使用默认的构造方法，初始容量被设置为10。
+	当ArrayList中的元素超过10个以后，会重新分配内存空间，
+	使数组的大小增长到16。
+	可以通过调试看到动态增长的数量变化：10->16->25->38->58->88->...
+  2. 长度增长计算公式： ((旧容量 * 3) / 2) + 1
+
+List的实现原理,HashMap的实现原理
+List和HashMap的扩容?扩容的大小是多少?
+
+jsp四大作用域和九大对象
+  四个作用域：request域、session域、application域、page域
+  
+九大内置对象:
+  1 out：页面输出
+  2 page：当前页面
+  3 pageContext：当前上下文（编译之后的当前页面）
+  4 request：请求
+  5 response：响应
+  6 session：会话
+  7 application(ServletContext)：tomcat启动时自动创建，tomcat停止时，自动销毁
+  8 config：配置文件（获取在web.xml中配置的Servlet的init-param配置信息）
+  9 exception:异常
+
+Spring中的IoC和DI:
+IoC(控制反转)：是一种面向对象编程中的一种设计原则，
+用来减低计算机代码之间的耦合度。
+DI(依赖注入)：将实例变量传入到一个对象中去
+
+控制反转是一种思想
+依赖注入是一种设计模式
+IoC框架使用依赖注入作为实现控制反转的方式
+
+Linux常用命令:
+ls　　        显示文件或目录
+     -l           列出文件详细信息l(list)
+     -a          列出当前目录下所有文件及目录，包括隐藏的a(all)
+mkdir         创建目录
+     -p           创建目录，若无父目录，则创建p(parent)
+cd               切换目录
+touch          创建空文件
+echo            创建带有内容的文件。
+cat              查看文件内容
+cp                拷贝
+mv               移动或重命名
+rm               删除文件
+     -r            递归删除，可删除子目录及文件
+     -f            强制删除
+find              在文件系统中搜索某文件
+wc                统计文本中行数、字数、字符数
+grep             在文本文件中查找某个字符串
+rmdir           删除空目录
+tree             树形结构显示目录，需要安装tree包
+pwd              显示当前目录
+ln                  创建链接文件
+more、less  分页显示文本文件内容
+head、tail    显示文件头、尾内容
+ctrl+alt+F1  命令行全屏模式
+
+stat              显示指定文件的详细信息，比ls更详细
+who               显示在线登陆用户
+whoami          显示当前操作用户
+hostname      显示主机名
+uname           显示系统信息
+top                动态显示当前耗费资源最多进程信息
+ps                  显示瞬间进程状态 ps -aux
+du                  查看目录大小 du -h /home带有单位显示目录信息
+df                  查看磁盘大小 df -h 带有单位显示磁盘信息
+ifconfig          查看网络情况
+ping                测试网络连通
+netstat          显示网络状态信息
+man                命令不会用了，找男人  如：man ls
+clear              清屏
+alias               对命令重命名 如：alias showmeit="ps -aux" ，另外解除使用unaliax showmeit
+kill                 杀死进程，可以先用ps 或 top命令查看进程的id，然后再用kill命令杀死进程。
+
+gzip：
+bzip2：
+tar:                打包压缩
+     -c              归档文件
+     -x              压缩文件
+     -z              gzip压缩文件
+     -j              bzip2压缩文件
+     -v              显示压缩或解压缩过程 v(view)
+     -f              使用档名
+例：
+tar -cvf /home/abc.tar /home/abc              只打包，不压缩
+tar -zcvf /home/abc.tar.gz /home/abc        打包，并用gzip压缩
+tar -jcvf /home/abc.tar.bz2 /home/abc      打包，并用bzip2压缩
+当然，如果想解压缩，就直接替换上面的命令  tar -cvf  / tar -zcvf  / tar -jcvf 中的“c” 换成“x” 就可以了。

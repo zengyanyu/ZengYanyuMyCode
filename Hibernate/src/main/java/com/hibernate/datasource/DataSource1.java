@@ -1,0 +1,66 @@
+package com.hibernate.datasource;
+
+import javax.sql.DataSource;
+
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.mybatis.spring.SqlSessionFactoryBean;
+import org.mybatis.spring.SqlSessionTemplate;
+import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.stereotype.Component;
+
+@Component
+@MapperScan(basePackages = { "com.hibernate.dao" }, //
+sqlSessionFactoryRef = "db1SqlSessionFactory")
+public class DataSource1 {
+
+	@Bean(name = "primaryDataSource")
+	@ConfigurationProperties(prefix = "spring.datasource.primary")
+	public DataSource primaryDataSource() {
+		return DataSourceBuilder.create().build();
+	}
+
+	@Bean("db1SqlSessionFactory")
+	@Primary
+	public SqlSessionFactory primarySqlSessionFactory(//
+			@Qualifier("primaryDataSource") DataSource dataSource) throws Exception {
+		SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
+		bean.setDataSource(dataSource);
+		return bean.getObject();
+	}
+
+	/**
+	 * 配置事务管理器
+	 * @author ZengYanyu
+	 * @Description
+	 * @Date 2020年6月6日 下午12:07:42
+	 * @param dataSource
+	 * @return
+	 */
+	@Bean(name = "transactionManager")
+	public DataSourceTransactionManager primaryDataSourceTransactionManager(
+			@Qualifier("primaryDataSource") DataSource dataSource) {
+		return new DataSourceTransactionManager(dataSource);
+	}
+
+	/**
+	 * 封装的数据库操作
+	 * SqlSessionTemplate是一个线程安全的对象
+	 * @author ZengYanyu
+	 * @Description
+	 * @Date 2020年6月6日 下午12:07:58
+	 * @param sqlSessionFactory
+	 * @return
+	 */
+	@Bean(name = "db1SqlSessionTemplate")
+	public SqlSessionTemplate primarySqlSessionTemplate(
+			@Qualifier("db1SqlSessionFactory") SqlSessionFactory sqlSessionFactory) {
+		return new SqlSessionTemplate(sqlSessionFactory);
+	}
+
+}
